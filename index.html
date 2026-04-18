@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 <title>Sandeep — Automate the work your team hates doing</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -62,10 +62,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:fl
 .nav-links a{font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);transition:color .25s;}
 .nav-links a:hover{color:var(--gold)}
 .nav-right{display:flex;align-items:center;gap:12px}
-.nav-avail{display:flex;align-items:center;gap:6px;font-size:.7rem;font-weight:600;color:var(--cyan);background:rgba(58,240,212,0.1);border:1px solid rgba(58,240,212,0.3);padding:5px 12px;border-radius:100px;}
+.nav-avail{display:flex;align-items:center;gap:6px;font-size:.7rem;font-weight:600;color:var(--cyan);background:rgba(58,240,212,0.1);border:1px solid rgba(58,240,212,0.3);padding:5px 12px;border-radius:100px;white-space:nowrap;}
 .nav-avail-dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.nav-cta{font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold2);padding:9px 20px;border-radius:100px;transition:all .3s var(--spring);}
+.nav-cta{font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold2);padding:9px 20px;border-radius:100px;transition:all .3s var(--spring);white-space:nowrap;}
 .nav-cta:hover{background:var(--gold);color:var(--ink);transform:scale(1.02)}
 .ham{display:none;flex-direction:column;gap:5px;cursor:none;z-index:10}
 .ham span{display:block;width:22px;height:2px;background:var(--mid);border-radius:2px;}
@@ -76,38 +76,38 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:fl
 .mob-close{position:absolute;top:24px;right:28px;font-size:1.8rem;color:var(--mid);cursor:none;background:none;border:none;}
 
 /* ========================================
-   HERO SECTION - FIXED: CARD ON TOP RIGHT
+   HERO SECTION - WIDER CARD & FIXED BUTTONS
    ======================================== */
 #hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 48px 80px;position:relative;}
 .hero-bg-num{position:absolute;right:-2vw;top:50%;transform:translateY(-50%);font-family:'Bebas Neue',sans-serif;font-size:clamp(280px,38vw,560px);color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.03);pointer-events:none;}
 .hero-available{display:inline-flex;align-items:center;gap:8px;font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:24px;}
 .hero-avail-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite;}
 
-/* TWO COLUMN LAYOUT - CARD ON RIGHT, CONTENT ON LEFT */
-.hero-two-col{display:grid;grid-template-columns:1fr 360px;gap:60px;align-items:start;margin-top:20px;}
+/* TWO COLUMN LAYOUT - WIDER CARD */
+.hero-two-col{display:grid;grid-template-columns:1fr 440px;gap:60px;align-items:start;margin-top:20px;}
 
 /* LEFT COLUMN */
 .hero-left-col{}
 
-/* RIGHT COLUMN - PROFILE CARD */
-.profile-card{background:rgba(17,17,34,0.95);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:24px;padding:28px;}
-.card-header{display:flex;align-items:center;gap:14px;padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:20px;}
-.card-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--ink);}
-.card-name{font-weight:700;color:var(--hi);font-size:1rem;}
-.card-title{font-size:.7rem;color:var(--mid);margin-top:2px;}
+/* RIGHT COLUMN - PROFILE CARD (WIDER) */
+.profile-card{background:rgba(17,17,34,0.95);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:24px;padding:32px;}
+.card-header{display:flex;align-items:center;gap:16px;padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:20px;}
+.card-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--ink);}
+.card-name{font-weight:700;color:var(--hi);font-size:1.1rem;}
+.card-title{font-size:.75rem;color:var(--mid);margin-top:2px;}
 .card-rating{margin-left:auto;text-align:right;}
-.card-stars{color:var(--gold);font-size:.8rem;letter-spacing:2px;}
-.card-score{font-size:.65rem;color:var(--mid);}
-.card-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-radius:12px;overflow:hidden;margin-bottom:20px;}
-.card-stat{background:var(--ink3);padding:14px 8px;text-align:center;}
-.card-stat-num{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--gold);line-height:1;}
-.card-stat-label{font-size:.6rem;color:var(--low);margin-top:4px;font-weight:500;}
-.card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
-.card-tag{font-size:.65rem;font-weight:600;color:var(--mid);background:rgba(255,255,255,0.05);border:1px solid var(--line);padding:4px 10px;border-radius:8px;}
-.card-availability{display:flex;align-items:center;justify-content:space-between;background:rgba(58,240,212,0.08);border:1px solid rgba(58,240,212,0.2);border-radius:12px;padding:12px 16px;}
-.card-avail-text{font-size:.75rem;color:var(--cyan);font-weight:600;}
-.card-avail-sub{font-size:.65rem;color:var(--mid);margin-top:2px;}
-.card-avail-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite;}
+.card-stars{color:var(--gold);font-size:.85rem;letter-spacing:2px;}
+.card-score{font-size:.7rem;color:var(--mid);}
+.card-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-radius:12px;overflow:hidden;margin-bottom:24px;}
+.card-stat{background:var(--ink3);padding:16px 8px;text-align:center;}
+.card-stat-num{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--gold);line-height:1;}
+.card-stat-label{font-size:.65rem;color:var(--low);margin-top:5px;font-weight:500;}
+.card-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.card-tag{font-size:.7rem;font-weight:600;color:var(--mid);background:rgba(255,255,255,0.05);border:1px solid var(--line);padding:5px 12px;border-radius:8px;}
+.card-availability{display:flex;align-items:center;justify-content:space-between;background:rgba(58,240,212,0.08);border:1px solid rgba(58,240,212,0.2);border-radius:12px;padding:14px 18px;}
+.card-avail-text{font-size:.8rem;color:var(--cyan);font-weight:600;}
+.card-avail-sub{font-size:.7rem;color:var(--mid);margin-top:3px;}
+.card-avail-dot{width:10px;height:10px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite;}
 
 /* LEFT CONTENT STYLES */
 .hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,5.5rem);line-height:.9;color:var(--hi);margin-bottom:8px;}
@@ -119,10 +119,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:fl
 .hero-role-type{font-family:'DM Serif Display',Georgia,serif;font-size:1.3rem;color:var(--gold);font-style:italic;}
 .hero-desc{font-size:1rem;color:var(--mid);line-height:1.8;margin-bottom:32px;}
 .hero-desc strong{color:var(--hi);}
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
-.btn-primary{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--gold);color:var(--ink);padding:14px 28px;border-radius:100px;transition:all .3s var(--spring);}
+
+/* BUTTONS - FIXED (never cut off) */
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap;}
+.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--gold);color:var(--ink);padding:14px 32px;border-radius:100px;transition:all .3s var(--spring);min-width:160px;white-space:nowrap;}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(240,224,58,.3);}
-.btn-secondary{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;font-weight:600;color:var(--hi);border:1px solid rgba(255,255,255,.2);padding:13px 28px;border-radius:100px;transition:all .3s;}
+.btn-secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:.85rem;font-weight:600;color:var(--hi);border:1px solid rgba(255,255,255,.2);padding:13px 32px;border-radius:100px;transition:all .3s;min-width:160px;white-space:nowrap;}
 .btn-secondary:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px);}
 
 .hero-scroll{display:flex;align-items:center;gap:8px;font-size:.7rem;color:var(--low);position:absolute;bottom:40px;right:48px;writing-mode:vertical-lr;}
@@ -273,7 +275,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:fl
 .cta-title{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2rem,5vw,3.5rem);color:var(--hi);line-height:1.1;margin-bottom:20px;}
 .cta-title em{color:var(--gold);font-style:italic;}
 .cta-sub{font-size:1rem;color:#a0a8c0;max-width:480px;margin:0 auto 40px;line-height:1.7;}
-.cta-buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
 
 /* ========================================
    CONTACT
@@ -308,7 +310,7 @@ footer{border-top:1px solid var(--line);padding:24px 48px;display:flex;align-ite
 .back-to-top:hover{gap:10px;}
 
 /* ========================================
-   RESPONSIVE
+   RESPONSIVE - FIXED BUTTONS ON MOBILE
    ======================================== */
 @media(max-width:1024px){
   .nav-links{display:none;}
@@ -316,7 +318,7 @@ footer{border-top:1px solid var(--line);padding:24px 48px;display:flex;align-ite
   .section{padding:80px 32px;}
   #hero{padding:100px 32px 60px;}
   .hero-two-col{grid-template-columns:1fr;gap:40px;}
-  .profile-card{max-width:400px;margin:0 auto;}
+  .profile-card{max-width:100%;margin:0 auto;}
   .about-grid{grid-template-columns:1fr;gap:48px;}
   .skills-container{grid-template-columns:1fr;}
   .process-grid{grid-template-columns:repeat(2,1fr);}
@@ -329,12 +331,18 @@ footer{border-top:1px solid var(--line);padding:24px 48px;display:flex;align-ite
   footer{padding:20px 32px;}
 }
 @media(max-width:720px){
-  nav{padding:16px 24px;}
+  nav{padding:16px 20px;}
   .nav-avail{display:none;}
-  .section{padding:60px 24px;}
-  #hero{padding:80px 24px 60px;}
+  .section{padding:60px 20px;}
+  #hero{padding:80px 20px 60px;}
   .hero-name{font-size:clamp(2.5rem,12vw,4rem);}
   .hero-headline{font-size:clamp(1.5rem,5vw,2rem);}
+  .hero-two-col{gap:32px;}
+  
+  /* FIXED BUTTONS - NEVER CUT OFF */
+  .hero-actions{flex-direction:column;width:100%;}
+  .btn-primary,.btn-secondary{width:100%;min-width:unset;white-space:normal;text-align:center;padding:14px 20px;}
+  
   .project-card{grid-template-columns:1fr;gap:16px;}
   .process-grid{grid-template-columns:1fr;}
   .process-step:first-child,.process-step:last-child{border-radius:0;}
@@ -343,10 +351,21 @@ footer{border-top:1px solid var(--line);padding:24px 48px;display:flex;align-ite
   .testimonial-grid{grid-template-columns:1fr;}
   .trust-badges{grid-template-columns:1fr;}
   .stats-grid{grid-template-columns:1fr;}
-  .hero-actions{flex-direction:column;align-items:stretch;}
-  .btn-primary,.btn-secondary{justify-content:center;}
   .hero-scroll{display:none;}
   footer{flex-direction:column;text-align:center;}
+  .profile-card{padding:24px;}
+  .card-stats{gap:1px;}
+  .card-stat{padding:12px 6px;}
+  .card-stat-num{font-size:1.4rem;}
+}
+@media(max-width:480px){
+  .hero-actions{gap:12px;}
+  .btn-primary,.btn-secondary{font-size:.8rem;padding:12px 16px;}
+  .profile-card{padding:20px;}
+  .card-header{gap:12px;}
+  .card-avatar{width:48px;height:48px;font-size:1.3rem;}
+  .card-stats .card-stat-num{font-size:1.2rem;}
+  .card-tag{font-size:.6rem;padding:4px 8px;}
 }
 </style>
 </head>
@@ -380,7 +399,7 @@ footer{border-top:1px solid var(--line);padding:24px 48px;display:flex;align-ite
   <a href="#contact" onclick="closeMob()">Contact</a>
 </div>
 
-<!-- HERO SECTION - CARD ON RIGHT PANEL -->
+<!-- HERO SECTION - WIDER CARD -->
 <section id="hero">
   <div class="hero-bg-num">AUTO</div>
   <div class="hero-available"><span class="hero-avail-dot"></span>Open to freelance projects</div>
@@ -401,7 +420,7 @@ footer{border-top:1px solid var(--line);padding:24px 48px;display:flex;align-ite
       </div>
     </div>
 
-    <!-- RIGHT COLUMN: Profile Card -->
+    <!-- RIGHT COLUMN: Profile Card (WIDER) -->
     <div class="profile-card">
       <div class="card-header">
         <div class="card-avatar">S</div>
