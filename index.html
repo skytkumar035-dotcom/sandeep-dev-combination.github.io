@@ -46,7 +46,6 @@ a{color:inherit;text-decoration:none}
 body.hovering #cursor-dot{width:40px;height:40px;background:var(--gold);opacity:.15}
 body.hovering #cursor-ring{width:40px;height:40px;border-color:var(--gold);opacity:0}
 
-/* Background */
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:var(--ink)}
 ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
@@ -76,20 +75,26 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:fl
 .mob-close{position:absolute;top:24px;right:28px;font-size:1.8rem;color:var(--mid);cursor:none;background:none;border:none;}
 
 /* ========================================
-   HERO SECTION - WIDER CARD & FIXED BUTTONS
+   HERO SECTION — FIX: justify-content:center + padding accounts for nav
    ======================================== */
-#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 48px 80px;position:relative;}
+#hero{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;        /* ← was flex-end, now centered so buttons always show */
+  padding:100px 48px 60px;       /* top padding clears the fixed nav */
+  position:relative;
+  overflow:hidden;
+}
 .hero-bg-num{position:absolute;right:-2vw;top:50%;transform:translateY(-50%);font-family:'Bebas Neue',sans-serif;font-size:clamp(280px,38vw,560px);color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.03);pointer-events:none;}
 .hero-available{display:inline-flex;align-items:center;gap:8px;font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:24px;}
 .hero-avail-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite;}
 
-/* TWO COLUMN LAYOUT - WIDER CARD */
+/* TWO COLUMN LAYOUT */
 .hero-two-col{display:grid;grid-template-columns:1fr 440px;gap:60px;align-items:start;margin-top:20px;}
-
-/* LEFT COLUMN */
 .hero-left-col{}
 
-/* RIGHT COLUMN - PROFILE CARD (WIDER) */
+/* Profile Card */
 .profile-card{background:rgba(17,17,34,0.95);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:24px;padding:32px;}
 .card-header{display:flex;align-items:center;gap:16px;padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:20px;}
 .card-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--ink);}
@@ -109,18 +114,32 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:fl
 .card-avail-sub{font-size:.7rem;color:var(--mid);margin-top:3px;}
 .card-avail-dot{width:10px;height:10px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite;}
 
-/* LEFT CONTENT STYLES */
+/* Left content */
 .hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,5.5rem);line-height:.9;color:var(--hi);margin-bottom:8px;}
 .hero-name span{display:inline-block;-webkit-text-stroke:1px var(--hi);color:transparent;margin-left:20px;}
 .hero-headline{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2rem,5vw,3.2rem);line-height:1.1;color:var(--hi);margin:16px 0 8px;}
 .hero-headline em{color:var(--gold);font-style:italic}
+
+/* ── TYPEWRITER ROLE ROW ── */
 .hero-role-row{display:flex;align-items:center;gap:20px;margin-bottom:24px;flex-wrap:wrap;}
 .hero-role-prefix{font-size:1rem;color:var(--mid);}
-.hero-role-type{font-family:'DM Serif Display',Georgia,serif;font-size:1.3rem;color:var(--gold);font-style:italic;}
+.hero-role-type{
+  font-family:'DM Serif Display',Georgia,serif;
+  font-size:1.3rem;
+  color:var(--gold);
+  font-style:italic;
+  border-right:2px solid var(--gold);
+  padding-right:4px;
+  white-space:nowrap;
+  overflow:hidden;
+  min-height:1.5em;
+  display:inline-block;
+}
+
 .hero-desc{font-size:1rem;color:var(--mid);line-height:1.8;margin-bottom:32px;}
 .hero-desc strong{color:var(--hi);}
 
-/* BUTTONS - FIXED (never cut off) */
+/* BUTTONS */
 .hero-actions{display:flex;gap:16px;flex-wrap:wrap;}
 .btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--gold);color:var(--ink);padding:14px 32px;border-radius:100px;transition:all .3s var(--spring);min-width:160px;white-space:nowrap;}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(240,224,58,.3);}
@@ -199,7 +218,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:fl
 .skill-fill{height:100%;width:0;border-radius:4px;transition:width 1.2s cubic-bezier(0.25,1,0.5,1);}
 .fill-gold{background:linear-gradient(90deg,var(--gold),var(--gold2));}
 .fill-cyan{background:linear-gradient(90deg,var(--cyan),#3af0a8);}
-.fill-pink{background:linear-gradient(90deg,var(--pink),#f07a3a);}
+.fill-pink{background:linear-gradient(90deg,#f03a8c,#f07a3a);}
 .skill-libs{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
 .skill-lib{font-size:.6rem;color:var(--low);background:rgba(255,255,255,0.05);border:1px solid var(--line);padding:2px 8px;border-radius:6px;}
 
@@ -254,7 +273,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:fl
 .testimonial-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--ink);flex-shrink:0;}
 .avatar-r{background:linear-gradient(135deg,var(--gold),var(--gold2));}
 .avatar-a{background:linear-gradient(135deg,var(--cyan),#3af0a8);}
-.avatar-p{background:linear-gradient(135deg,var(--pink),#f07a3a);}
+.avatar-p{background:linear-gradient(135deg,#f03a8c,#f07a3a);}
 .testimonial-name{font-size:.85rem;font-weight:700;color:var(--hi);}
 .testimonial-role{font-size:.65rem;color:var(--low);margin-top:2px;}
 .testimonial-stars{color:var(--gold);font-size:.7rem;letter-spacing:3px;margin-top:4px;}
@@ -310,13 +329,13 @@ footer{border-top:1px solid var(--line);padding:24px 48px;display:flex;align-ite
 .back-to-top:hover{gap:10px;}
 
 /* ========================================
-   RESPONSIVE - FIXED BUTTONS ON MOBILE
+   RESPONSIVE
    ======================================== */
 @media(max-width:1024px){
   .nav-links{display:none;}
   .ham{display:flex;}
   .section{padding:80px 32px;}
-  #hero{padding:100px 32px 60px;}
+  #hero{padding:90px 32px 60px;}
   .hero-two-col{grid-template-columns:1fr;gap:40px;}
   .profile-card{max-width:100%;margin:0 auto;}
   .about-grid{grid-template-columns:1fr;gap:48px;}
@@ -338,11 +357,8 @@ footer{border-top:1px solid var(--line);padding:24px 48px;display:flex;align-ite
   .hero-name{font-size:clamp(2.5rem,12vw,4rem);}
   .hero-headline{font-size:clamp(1.5rem,5vw,2rem);}
   .hero-two-col{gap:32px;}
-  
-  /* FIXED BUTTONS - NEVER CUT OFF */
   .hero-actions{flex-direction:column;width:100%;}
   .btn-primary,.btn-secondary{width:100%;min-width:unset;white-space:normal;text-align:center;padding:14px 20px;}
-  
   .project-card{grid-template-columns:1fr;gap:16px;}
   .process-grid{grid-template-columns:1fr;}
   .process-step:first-child,.process-step:last-child{border-radius:0;}
@@ -399,20 +415,23 @@ footer{border-top:1px solid var(--line);padding:24px 48px;display:flex;align-ite
   <a href="#contact" onclick="closeMob()">Contact</a>
 </div>
 
-<!-- HERO SECTION - WIDER CARD -->
+<!-- HERO SECTION -->
 <section id="hero">
   <div class="hero-bg-num">AUTO</div>
   <div class="hero-available"><span class="hero-avail-dot"></span>Open to freelance projects</div>
   
   <div class="hero-two-col">
-    <!-- LEFT COLUMN: Content -->
+    <!-- LEFT COLUMN -->
     <div class="hero-left-col">
       <h1 class="hero-name">Sandeep<span>.</span></h1>
       <div class="hero-headline">I automate the work<br>your team <em>hates</em> doing.</div>
+
+      <!-- TYPEWRITER ROLE ROW -->
       <div class="hero-role-row">
         <span class="hero-role-prefix">Python & Excel</span>
-        <span class="hero-role-type">Automation Engineer</span>
+        <span class="hero-role-type" id="roleType"></span>
       </div>
+
       <p class="hero-desc">Messy spreadsheets. Manual data entry. Hours of copy-pasting.<br>I build Python scripts that handle all of it — saving businesses <strong>50+ hours every month.</strong></p>
       <div class="hero-actions">
         <a href="#projects" class="btn-primary">View My Work →</a>
@@ -420,7 +439,7 @@ footer{border-top:1px solid var(--line);padding:24px 48px;display:flex;align-ite
       </div>
     </div>
 
-    <!-- RIGHT COLUMN: Profile Card (WIDER) -->
+    <!-- RIGHT COLUMN: Profile Card -->
     <div class="profile-card">
       <div class="card-header">
         <div class="card-avatar">S</div>
@@ -619,6 +638,33 @@ ham.addEventListener('click',()=>mob.classList.add('open'));
 closeBtn.addEventListener('click',()=>mob.classList.remove('open'));
 function closeMob(){mob.classList.remove('open');}
 
+// ── TYPEWRITER ANIMATION (from file 2) ──
+const roles = [
+  'Automation Engineer',
+  'Python Developer',
+  'Excel Automation Expert',
+  'Data Cleaning Specialist',
+  'Workflow Architect'
+];
+let ri = 0, ci = 0, deleting = false, wait = 0;
+const typeEl = document.getElementById('roleType');
+function type() {
+  const current = roles[ri];
+  if (wait > 0) { wait--; setTimeout(type, 50); return; }
+  if (!deleting) {
+    typeEl.textContent = current.slice(0, ci + 1);
+    ci++;
+    if (ci === current.length) { deleting = true; wait = 38; }
+    setTimeout(type, 80);
+  } else {
+    typeEl.textContent = current.slice(0, ci - 1);
+    ci--;
+    if (ci === 0) { deleting = false; ri = (ri + 1) % roles.length; wait = 8; }
+    setTimeout(type, 50);
+  }
+}
+type();
+
 // Marquee
 const marqueeItems=['Excel Automation','Data Cleaning','Python Scripting','PDF → Excel','Duplicate Removal','Workflow Automation','Batch Processing','File Conversion','Data Formatting'];
 const marqueeTrack=document.getElementById('marqueeTrack');
@@ -643,12 +689,12 @@ function startCounter(el) {
 const counterObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.querySelectorAll('.counter-stat, [data-target]').forEach(el => { if(el.getAttribute('data-target')) startCounter(el); });
+            entry.target.querySelectorAll('.counter-stat,[data-target]').forEach(el => { if(el.getAttribute('data-target')) startCounter(el); });
             counterObserver.unobserve(entry.target);
         }
     });
 }, { threshold: 0.2 });
-document.querySelectorAll('.about-stats, .stats-grid, .card-stats').forEach(container => counterObserver.observe(container));
+document.querySelectorAll('.about-stats,.stats-grid,.card-stats').forEach(container => counterObserver.observe(container));
 document.querySelectorAll('.card-stats .counter-stat').forEach(el => { if(el.getAttribute('data-target')) startCounter(el); });
 
 // Skill bars
