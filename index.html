@@ -6,19 +6,20 @@
 <title>Sandeep — Automate the work your team hates doing</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Cabinet+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet"/>
 <style>
-/* ══════════════════════════════════════════
+/* ========================================
    RESET & TOKENS
-══════════════════════════════════════════ */
+   ======================================== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:16px}
 body{
   font-family:'Cabinet Grotesk',system-ui,sans-serif;
   background:#080810;
-  color:#c0cce8;
+  color:#e0e4f0;
   overflow-x:hidden;
   cursor:none;
+  line-height:1.5;
 }
 a{color:inherit;text-decoration:none}
 button{font-family:inherit;cursor:none}
@@ -29,327 +30,344 @@ button{font-family:inherit;cursor:none}
   --ink2:#0e0e1c;
   --ink3:#141428;
   --card:#111122;
-  --line:rgba(255,255,255,0.07);
-  --line2:rgba(240,224,58,0.18);
+  --card2:#1a1a30;
+  --line:rgba(255,255,255,0.08);
   --gold:#f0e03a;
   --gold2:#ffe566;
-  --glow:rgba(240,224,58,0.15);
   --cyan:#3af0d4;
   --pink:#f03a8c;
-  --hi:#f0f4ff;
-  --mid:#8896b3;
-  --low:#3d4a66;
+  --hi:#ffffff;
+  --mid:#a0a8c0;
+  --low:#5a6680;
   --r:12px;
-  --ease:cubic-bezier(.4,0,.2,1);
-  --spring:cubic-bezier(.34,1.56,.64,1);
+  --ease:cubic-bezier(0.4,0,0.2,1);
+  --spring:cubic-bezier(0.34,1.56,0.64,1);
 }
 
-/* CUSTOM CURSOR */
+/* ========================================
+   CUSTOM CURSOR
+   ======================================== */
 #cursor{position:fixed;top:0;left:0;z-index:9999;pointer-events:none;mix-blend-mode:difference;}
-#cursor-dot{position:absolute;width:8px;height:8px;background:var(--gold);border-radius:50%;transform:translate(-50%,-50%);transition:transform .1s var(--ease),width .25s var(--spring),height .25s var(--spring);}
-#cursor-ring{position:absolute;width:36px;height:36px;border:1.5px solid rgba(240,224,58,0.6);border-radius:50%;transform:translate(-50%,-50%);transition:transform .18s var(--ease),width .3s var(--spring),height .3s var(--spring),border-color .25s;}
-body.hovering #cursor-dot{width:48px;height:48px;background:var(--gold);opacity:.18}
-body.hovering #cursor-ring{width:48px;height:48px;border-color:var(--gold);opacity:0}
+#cursor-dot{position:absolute;width:6px;height:6px;background:var(--gold);border-radius:50%;transform:translate(-50%,-50%);transition:transform .1s var(--ease);}
+#cursor-ring{position:absolute;width:32px;height:32px;border:1.5px solid rgba(240,224,58,0.5);border-radius:50%;transform:translate(-50%,-50%);transition:transform .18s var(--ease);}
+body.hovering #cursor-dot{width:40px;height:40px;background:var(--gold);opacity:.15}
+body.hovering #cursor-ring{width:40px;height:40px;border-color:var(--gold);opacity:0}
 
-/* SCROLLBAR & BG */
+/* ========================================
+   BACKGROUND
+   ======================================== */
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:var(--ink)}
 ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
-body::before{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.55;}
-.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);background-size:72px 72px;mask-image:radial-gradient(ellipse 80% 80% at 50% 20%, black 30%, transparent 100%);}
+body::before{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:.55;pointer-events:none;}
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);background-size:72px 72px;mask-image:radial-gradient(ellipse 80% 80% at 50% 20%, black 40%, transparent 100%);}
 
-/* NAVIGATION */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:flex;align-items:center;justify-content:space-between;}
-nav::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,8,16,0.95) 0%,transparent 100%);pointer-events:none;z-index:-1;}
+/* ========================================
+   NAVIGATION
+   ======================================== */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,16,0.8);backdrop-filter:blur(12px);}
 .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.12em;color:var(--hi);display:flex;align-items:center;gap:10px;}
 .nav-logo-mark{width:30px;height:30px;border:1.5px solid var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--gold);transition:all .3s var(--spring);}
 .nav-logo:hover .nav-logo-mark{background:var(--gold);color:var(--ink);transform:rotate(15deg)}
-.nav-links{display:flex;gap:36px;list-style:none;position:absolute;left:50%;transform:translateX(-50%);}
-.nav-links a{font-size:.82rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);position:relative;transition:color .25s;}
-.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .3s var(--ease);}
-.nav-links a:hover{color:var(--hi)}
-.nav-links a:hover::after{transform:scaleX(1);transform-origin:left}
+.nav-links{display:flex;gap:36px;list-style:none;}
+.nav-links a{font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);transition:color .25s;}
+.nav-links a:hover{color:var(--gold)}
 .nav-right{display:flex;align-items:center;gap:12px}
 .nav-avail{display:flex;align-items:center;gap:6px;font-size:.7rem;font-weight:600;color:var(--cyan);background:rgba(58,240,212,0.1);border:1px solid rgba(58,240,212,0.3);padding:5px 12px;border-radius:100px;}
-.nav-avail-dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.7);opacity:.5}}
-.nav-cta{font-size:.8rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold2);padding:9px 20px;border-radius:100px;transition:all .3s var(--spring);background:transparent;}
-.nav-cta:hover{background:var(--gold);color:var(--ink);transform:scale(1.05)}
+.nav-avail-dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.nav-cta{font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold2);padding:9px 20px;border-radius:100px;transition:all .3s var(--spring);}
+.nav-cta:hover{background:var(--gold);color:var(--ink);transform:scale(1.02)}
 .ham{display:none;flex-direction:column;gap:5px;cursor:none;z-index:10}
-.ham span{display:block;width:22px;height:1.5px;background:var(--mid);border-radius:2px;transition:.3s}
-.mob-menu{display:none;position:fixed;inset:0;z-index:99;background:rgba(8,8,16,.97);backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;gap:32px;}
+.ham span{display:block;width:22px;height:2px;background:var(--mid);border-radius:2px;transition:.3s}
+.mob-menu{display:none;position:fixed;inset:0;z-index:99;background:rgba(8,8,16,.98);backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;gap:32px;}
 .mob-menu.open{display:flex}
-.mob-menu a{font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:.1em;color:var(--hi);transition:color .2s}
+.mob-menu a{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--hi);transition:color .2s}
 .mob-menu a:hover{color:var(--gold)}
-.mob-close{position:absolute;top:24px;right:28px;font-size:1.5rem;color:var(--mid);cursor:none}
+.mob-close{position:absolute;top:24px;right:28px;font-size:1.8rem;color:var(--mid);cursor:none;background:none;border:none;}
 
-/* HERO SECTION */
-#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 48px 80px;position:relative;overflow:hidden;}
-.hero-bg-num{position:absolute;right:-2vw;top:50%;transform:translateY(-50%);font-family:'Bebas Neue',sans-serif;font-size:clamp(280px,38vw,560px);color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.04);line-height:1;pointer-events:none;user-select:none;letter-spacing:-.05em;animation:bgnumshift 8s ease-in-out infinite alternate;}
-@keyframes bgnumshift{from{transform:translateY(-50%)}to{transform:translateY(-47%) scale(1.02)}}
-.hero-line{position:absolute;left:48px;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent 0%,var(--gold) 30%,var(--gold) 70%,transparent 100%);opacity:.18;}
-.hero-available{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:24px;}
-.hero-avail-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:pulse 2s ease-in-out infinite;}
-.hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,6rem);line-height:.92;letter-spacing:-.01em;color:var(--hi);margin-bottom:8px;}
-@keyframes hero-name-in{from{opacity:0;transform:translateY(60px) skewY(2deg)}to{opacity:1;transform:translateY(0) skewY(0)}}
-.hero-name span{display:inline-block;-webkit-text-stroke:1px var(--hi);color:transparent;margin-left:24px;}
-.hero-headline{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2rem,5vw,3.5rem);line-height:1.1;color:var(--hi);margin:16px 0 8px;}
+/* ========================================
+   HERO SECTION - FIXED LAYOUT
+   ======================================== */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 48px 80px;position:relative;}
+.hero-bg-num{position:absolute;right:-2vw;top:50%;transform:translateY(-50%);font-family:'Bebas Neue',sans-serif;font-size:clamp(280px,38vw,560px);color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.03);line-height:1;pointer-events:none;user-select:none;}
+.hero-available{display:inline-flex;align-items:center;gap:8px;font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:24px;}
+.hero-avail-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:pulse 2s infinite;}
+.hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,5.5rem);line-height:.9;color:var(--hi);margin-bottom:8px;}
+.hero-name span{display:inline-block;-webkit-text-stroke:1px var(--hi);color:transparent;margin-left:20px;}
+.hero-headline{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2rem,5vw,3.2rem);line-height:1.1;color:var(--hi);margin:16px 0 8px;}
 .hero-headline em{color:var(--gold);font-style:italic}
-.hero-role-row{display:flex;align-items:center;gap:24px;margin-bottom:24px;}
-.hero-role-prefix{font-size:clamp(0.9rem,2vw,1.2rem);color:var(--mid);font-weight:300;}
-.hero-role-type{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(1.2rem,2.5vw,1.8rem);color:var(--gold);font-style:italic;}
-.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;flex-wrap:wrap;}
-.hero-desc{max-width:480px;font-size:1rem;color:var(--mid);line-height:1.8;font-weight:300;}
-.hero-desc strong{color:var(--hi);font-weight:500}
-.hero-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.btn-gold{display:inline-flex;align-items:center;gap:10px;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--gold);color:var(--ink);padding:14px 30px;border-radius:100px;transition:all .3s var(--spring);position:relative;overflow:hidden;}
-.btn-gold::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.3),transparent);opacity:0;transition:opacity .3s;}
-.btn-gold:hover{transform:scale(1.05);box-shadow:0 8px 32px rgba(240,224,58,.4)}
-.btn-gold:hover::before{opacity:1}
-.btn-outline-gold{display:inline-flex;align-items:center;gap:10px;font-size:.85rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--hi);border:1px solid rgba(255,255,255,.18);padding:14px 30px;border-radius:100px;transition:all .3s var(--spring);}
-.btn-outline-gold:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
-.hero-scroll{display:flex;align-items:center;gap:8px;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--low);position:absolute;bottom:40px;right:48px;writing-mode:vertical-lr;}
-.hero-scroll::before{content:'';width:1px;height:60px;background:linear-gradient(180deg,transparent,var(--low));}
+.hero-role-row{display:flex;align-items:center;gap:20px;margin-bottom:24px;flex-wrap:wrap;}
+.hero-role-prefix{font-size:1rem;color:var(--mid);}
+.hero-role-type{font-family:'DM Serif Display',Georgia,serif;font-size:1.3rem;color:var(--gold);font-style:italic;}
 
-/* Hero Card */
-.hero-wrapper{display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start;margin-top:40px;}
-.hero-left-col{flex:2;min-width:280px}
-.hero-card{flex:1;min-width:280px;background:rgba(17,17,34,0.9);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:20px;padding:28px;}
-.hc-header{display:flex;align-items:center;gap:12px;padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:20px;}
-.hc-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);flex-shrink:0;}
-.hc-name{font-weight:700;color:var(--hi);font-size:.95rem}
-.hc-title{font-size:.75rem;color:var(--mid);margin-top:2px}
-.hc-rating{margin-left:auto;text-align:right}
-.hc-stars{color:var(--gold);font-size:.8rem;letter-spacing:1px}
-.hc-score{font-size:.7rem;color:var(--mid)}
-.hc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-radius:10px;overflow:hidden;margin-bottom:18px;}
-.hcs{background:var(--ink3);padding:14px 10px;text-align:center;}
-.hcs-n{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--gold);line-height:1;}
-.hcs-l{font-size:.62rem;color:var(--low);margin-top:3px;font-weight:500;letter-spacing:.03em}
-.hc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
-.hc-tag{font-size:.7rem;font-weight:600;color:var(--mid);background:rgba(255,255,255,0.05);border:1px solid var(--line);padding:4px 10px;border-radius:7px;}
-.hc-avail{display:flex;align-items:center;justify-content:space-between;background:rgba(58,240,212,0.08);border:1px solid rgba(58,240,212,0.2);border-radius:10px;padding:12px 14px;}
-.hc-avail-text{font-size:.78rem;color:var(--cyan);font-weight:600}
-.hc-avail-sub{font-size:.68rem;color:var(--mid);margin-top:1px}
-.hc-avail-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:pulse 2s ease-in-out infinite}
+/* Hero 2-Column Layout */
+.hero-grid{display:grid;grid-template-columns:1fr 380px;gap:60px;align-items:start;margin-top:40px;}
+.hero-desc{font-size:1rem;color:var(--mid);line-height:1.8;margin-bottom:32px;}
+.hero-desc strong{color:var(--hi);}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--gold);color:var(--ink);padding:14px 28px;border-radius:100px;transition:all .3s var(--spring);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(240,224,58,.3);}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;font-weight:600;color:var(--hi);border:1px solid rgba(255,255,255,.2);padding:13px 28px;border-radius:100px;transition:all .3s;}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px);}
 
-/* SECTION COMMON */
-.section{padding:120px 48px;position:relative;z-index:2}
-.section-label{display:flex;align-items:center;gap:16px;font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--low);margin-bottom:60px;}
-.section-label::before{content:attr(data-num);font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--gold);letter-spacing:.05em}
-.section-label::after{content:'';flex:1;max-width:80px;height:1px;background:var(--line)}
-.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
-.reveal.in{opacity:1;transform:none}
+/* Profile Card - Right Panel */
+.profile-card{background:rgba(17,17,34,0.95);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:24px;padding:28px;}
+.card-header{display:flex;align-items:center;gap:14px;padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:20px;}
+.card-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--ink);}
+.card-name{font-weight:700;color:var(--hi);font-size:1rem;}
+.card-title{font-size:.7rem;color:var(--mid);margin-top:2px;}
+.card-rating{margin-left:auto;text-align:right;}
+.card-stars{color:var(--gold);font-size:.8rem;letter-spacing:2px;}
+.card-score{font-size:.65rem;color:var(--mid);}
+.card-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-radius:12px;overflow:hidden;margin-bottom:20px;}
+.card-stat{background:var(--ink3);padding:14px 8px;text-align:center;}
+.card-stat-num{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--gold);line-height:1;}
+.card-stat-label{font-size:.6rem;color:var(--low);margin-top:4px;font-weight:500;}
+.card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
+.card-tag{font-size:.65rem;font-weight:600;color:var(--mid);background:rgba(255,255,255,0.05);border:1px solid var(--line);padding:4px 10px;border-radius:8px;}
+.card-availability{display:flex;align-items:center;justify-content:space-between;background:rgba(58,240,212,0.08);border:1px solid rgba(58,240,212,0.2);border-radius:12px;padding:12px 16px;}
+.card-avail-text{font-size:.75rem;color:var(--cyan);font-weight:600;}
+.card-avail-sub{font-size:.65rem;color:var(--mid);margin-top:2px;}
+.card-avail-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite;}
 
-/* MARQUEE */
-.marquee-strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0;overflow:hidden;position:relative;z-index:2;background:var(--ink2);}
-.marquee-track{display:flex;gap:0;white-space:nowrap;animation:marquee 25s linear infinite;}
-.marquee-item{display:inline-flex;align-items:center;gap:20px;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.12em;color:var(--low);padding:0 32px;flex-shrink:0;}
-.marquee-item .dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.hero-scroll{display:flex;align-items:center;gap:8px;font-size:.7rem;color:var(--low);position:absolute;bottom:40px;right:48px;writing-mode:vertical-lr;}
+
+/* ========================================
+   MARQUEE
+   ======================================== */
+.marquee-strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;overflow:hidden;background:var(--ink2);}
+.marquee-track{display:flex;gap:0;white-space:nowrap;animation:marquee 22s linear infinite;}
+.marquee-item{display:inline-flex;align-items:center;gap:16px;font-family:'Bebas Neue',sans-serif;font-size:.9rem;color:var(--low);padding:0 28px;flex-shrink:0;}
+.marquee-item .dot{width:4px;height:4px;border-radius:50%;background:var(--gold);}
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* ABOUT */
-#about{background:var(--ink)}
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;max-width:1200px;margin:0 auto;}
-.about-h{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2rem,4vw,3rem);line-height:1.15;letter-spacing:-.02em;color:var(--hi);margin-bottom:28px;}
-.about-h em{font-style:italic;color:var(--gold)}
-.about-body{font-size:1rem;color:var(--mid);line-height:1.85;font-weight:300;margin-bottom:24px;}
-.trust-note{display:flex;align-items:flex-start;gap:10px;background:rgba(17,17,34,0.8);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:0 var(--r) var(--r) 0;padding:14px 18px;margin-top:24px;font-size:.85rem;color:var(--mid);line-height:1.55;}
-.trust-note strong{color:var(--gold)}
-.about-stats{display:flex;gap:48px;padding-top:36px;border-top:1px solid var(--line)}
-.astat-n{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
-.astat-l{font-size:.7rem;color:var(--low);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
-.about-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:32px;position:relative;overflow:hidden;margin-bottom:16px;}
-.about-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,var(--gold),transparent);}
-.about-card-ico{font-size:1.8rem;margin-bottom:16px;display:block}
-.about-card-title{font-size:1rem;font-weight:700;color:var(--hi);margin-bottom:6px}
-.about-card-body{font-size:.85rem;color:var(--mid);line-height:1.7}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:64px;max-width:1000px;margin-left:auto;margin-right:auto;}
-.sg{background:var(--card);padding:28px 24px;text-align:center}
-.sg-n{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--gold);line-height:1;margin-bottom:6px;}
-.sg-l{font-size:.7rem;font-weight:600;color:var(--low);letter-spacing:.06em;text-transform:uppercase}
+/* ========================================
+   SECTION STYLES
+   ======================================== */
+.section{padding:100px 48px;position:relative;z-index:2;}
+.section-label{display:flex;align-items:center;gap:16px;font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--low);margin-bottom:48px;}
+.section-label::before{content:attr(data-num);font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--gold);}
+.section-label::after{content:'';flex:1;max-width:60px;height:1px;background:var(--line);}
+.section-title{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2rem,4vw,2.8rem);color:var(--hi);margin-bottom:48px;letter-spacing:-.02em;}
+.section-title em{color:var(--gold);font-style:italic;}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .6s var(--ease),transform .6s var(--ease);}
+.reveal.in{opacity:1;transform:none;}
 
-/* SKILLS */
-#skills{background:var(--ink2)}
-.skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:1200px;margin:0 auto;}
-.terminal{background:#0a0a14;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.6);}
-.terminal-bar{background:#111124;border-bottom:1px solid var(--line);padding:12px 18px;display:flex;align-items:center;gap:8px;}
-.t-dot{width:10px;height:10px;border-radius:50%}
-.t-dot:nth-child(1){background:#ff5f57}
-.t-dot:nth-child(2){background:#febc2e}
-.t-dot:nth-child(3){background:#28c840}
-.t-title{font-size:.72rem;color:var(--low);margin:0 auto;letter-spacing:.06em}
-.terminal-body{padding:24px;font-family:'Cabinet Grotesk',monospace;font-size:.85rem;line-height:2}
-.t-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.t-prompt{color:var(--gold);flex-shrink:0}
-.t-cmd{color:var(--cyan)}
-.t-output{color:var(--mid);padding-left:24px}
-.timing-success{color:#34d483;margin-top:8px;padding-left:0;}
-.timing-success .t-prompt{color:#34d483}
-.skills-list-right{display:flex;flex-direction:column;gap:14px}
-.skill-bar-label{display:flex;justify-content:space-between;font-size:.82rem;font-weight:500;color:var(--hi);margin-bottom:8px;}
-.skill-bar-pct{color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:1rem}
-.skill-bar-track{height:4px;background:var(--ink3);border-radius:4px;overflow:hidden;}
-.skill-bar-fill{height:100%;border-radius:4px;width:0;transition:width 1.2s cubic-bezier(.25,1,.5,1);}
-.sf-gold{background:linear-gradient(90deg,var(--gold),var(--gold2))}
-.sf-cyan{background:linear-gradient(90deg,var(--cyan),#3af0a8)}
-.sf-pink{background:linear-gradient(90deg,var(--pink),#f07a3a)}
-.ski-libs{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap;}
-.ski-lib{font-family:'Cabinet Grotesk',monospace;font-size:.6rem;color:var(--low);background:rgba(255,255,255,0.05);border:1px solid var(--line);padding:2px 7px;border-radius:5px;}
+/* ========================================
+   ABOUT - IMPROVED READABILITY
+   ======================================== */
+#about{background:var(--ink);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;max-width:1200px;margin:0 auto;}
+.about-text p{font-size:1rem;color:#b0b8d0;line-height:1.8;margin-bottom:20px;}
+.about-text strong{color:var(--hi);}
+.trust-badge{display:flex;align-items:flex-start;gap:12px;background:rgba(240,224,58,0.05);border-left:3px solid var(--gold);padding:16px 20px;margin:24px 0;border-radius:0 12px 12px 0;}
+.trust-badge span{font-size:.9rem;color:var(--mid);}
+.trust-badge strong{color:var(--gold);}
+.about-stats{display:flex;gap:40px;padding-top:32px;border-top:1px solid var(--line);margin-top:16px;}
+.stat-item .stat-number{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
+.stat-item .stat-label{font-size:.7rem;color:var(--low);letter-spacing:.08em;text-transform:uppercase;margin-top:4px;}
+.feature-cards{display:flex;flex-direction:column;gap:14px;}
+.feature-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;transition:all .3s;}
+.feature-card:hover{border-color:rgba(240,224,58,.2);transform:translateX(4px);}
+.feature-icon{font-size:1.6rem;margin-bottom:12px;}
+.feature-title{font-size:1rem;font-weight:700;color:var(--hi);margin-bottom:6px;}
+.feature-desc{font-size:.85rem;color:#9098b0;line-height:1.6;}
 
-/* PROJECTS */
-#projects{background:var(--ink)}
-.projects-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:60px;flex-wrap:wrap;gap:20px;max-width:1200px;}
-.projects-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,7vw,5rem);line-height:.9;letter-spacing:-.01em;color:var(--hi);}
-.projects-title span{display:block;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.25);}
-.projects-count{font-size:.8rem;color:var(--low);letter-spacing:.1em;text-transform:uppercase;padding-bottom:8px;}
-.proj-list{display:flex;flex-direction:column;gap:2px;max-width:1200px;margin:0 auto}
-.proj-item{border-top:1px solid var(--line);padding:32px 0;display:grid;grid-template-columns:80px 1fr auto;gap:32px;align-items:center;transition:all .3s var(--ease);cursor:none;position:relative;}
-.proj-item::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(240,224,58,.04),transparent);transform:translateX(-100%);transition:transform .4s var(--ease);}
-.proj-item:hover::before{transform:translateX(0)}
-.proj-item:hover{border-color:rgba(240,224,58,.2)}
-.proj-item:last-child{border-bottom:1px solid var(--line)}
-.proj-num{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--low);letter-spacing:.05em;}
-.proj-item:hover .proj-num{color:var(--gold)}
-.proj-badge{display:inline-flex;align-items:center;gap:5px;font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);background:rgba(240,224,58,0.1);border:1px solid rgba(240,224,58,0.3);padding:2px 9px;border-radius:100px;margin-bottom:8px;}
-.proj-name{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(1.2rem,2.2vw,1.7rem);color:var(--hi);letter-spacing:-.02em;margin-bottom:8px;}
-.proj-item:hover .proj-name{color:var(--gold)}
-.proj-desc{font-size:.85rem;color:var(--mid);line-height:1.65;max-width:560px;font-weight:300}
-.proj-tags{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.proj-tag{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:100px;border:1px solid var(--line);color:var(--low);}
-.proj-item:hover .proj-tag{border-color:rgba(240,224,58,.2);color:var(--gold)}
-.proj-arrow{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--low);font-size:1rem;transition:all .3s var(--spring);flex-shrink:0;}
-.proj-item:hover .proj-arrow{border-color:var(--gold);color:var(--gold);transform:rotate(45deg) scale(1.05);background:rgba(240,224,58,.08)}
+/* Stats Grid */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border-radius:16px;overflow:hidden;margin-top:64px;max-width:1000px;margin-left:auto;margin-right:auto;}
+.stat-cell{background:var(--card);padding:28px 20px;text-align:center;}
+.stat-cell .stat-num{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--gold);line-height:1;}
+.stat-cell .stat-label{font-size:.7rem;font-weight:600;color:var(--low);letter-spacing:.06em;text-transform:uppercase;margin-top:6px;}
 
-/* PROCESS */
-#process{background:var(--ink2)}
+/* ========================================
+   SKILLS - BETTER VISIBILITY
+   ======================================== */
+#skills{background:var(--ink2);}
+.skills-container{display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:1200px;margin:0 auto;}
+.terminal-window{background:#0a0a14;border:1px solid var(--line);border-radius:16px;overflow:hidden;}
+.terminal-header{background:#111124;padding:12px 18px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);}
+.terminal-dot{width:10px;height:10px;border-radius:50%;}
+.terminal-dot.red{background:#ff5f57;}
+.terminal-dot.yellow{background:#febc2e;}
+.terminal-dot.green{background:#28c840;}
+.terminal-title{font-size:.7rem;color:var(--low);margin:0 auto;font-family:monospace;}
+.terminal-body{padding:24px;font-family:monospace;font-size:.8rem;line-height:1.9;}
+.terminal-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.terminal-prompt{color:var(--gold);}
+.terminal-command{color:var(--cyan);}
+.terminal-output{color:#a0a8c0;margin-left:20px;}
+.terminal-success{color:#34d483;margin-top:8px;}
+.skills-bars{display:flex;flex-direction:column;gap:18px;}
+.skill-item .skill-header{display:flex;justify-content:space-between;margin-bottom:8px;}
+.skill-name{font-size:.85rem;font-weight:600;color:var(--hi);}
+.skill-percent{color:var(--gold);font-family:monospace;font-size:.8rem;}
+.skill-track{height:4px;background:var(--ink3);border-radius:4px;overflow:hidden;}
+.skill-fill{height:100%;width:0;border-radius:4px;transition:width 1.2s cubic-bezier(0.25,1,0.5,1);}
+.fill-gold{background:linear-gradient(90deg,var(--gold),var(--gold2));}
+.fill-cyan{background:linear-gradient(90deg,var(--cyan),#3af0a8);}
+.fill-pink{background:linear-gradient(90deg,var(--pink),#f07a3a);}
+.skill-libs{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.skill-lib{font-size:.6rem;color:var(--low);background:rgba(255,255,255,0.05);border:1px solid var(--line);padding:2px 8px;border-radius:6px;}
+
+/* ========================================
+   PROJECTS - REDESIGNED CARDS
+   ======================================== */
+#projects{background:var(--ink);}
+.projects-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;flex-wrap:wrap;gap:20px;}
+.projects-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,4rem);color:var(--hi);}
+.projects-title span{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.2);}
+.projects-count{font-size:.8rem;color:var(--low);letter-spacing:.1em;text-transform:uppercase;}
+.project-list{display:flex;flex-direction:column;gap:24px;max-width:1200px;margin:0 auto;}
+.project-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:32px;transition:all .3s var(--ease);display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:start;}
+.project-card:hover{border-color:rgba(240,224,58,.25);transform:translateY(-4px);background:rgba(17,17,34,0.8);}
+.project-number{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--low);line-height:1;}
+.project-card:hover .project-number{color:var(--gold);}
+.project-badge{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);background:rgba(240,224,58,0.1);border:1px solid rgba(240,224,58,0.25);padding:4px 12px;border-radius:100px;margin-bottom:12px;}
+.project-name{font-family:'DM Serif Display',Georgia,serif;font-size:1.4rem;color:var(--hi);margin-bottom:12px;}
+.project-card:hover .project-name{color:var(--gold);}
+.project-desc{font-size:.9rem;color:#a0a8c0;line-height:1.7;margin-bottom:16px;}
+.project-tags{display:flex;gap:8px;flex-wrap:wrap;}
+.project-tag{font-size:.65rem;font-weight:600;padding:4px 12px;border-radius:100px;border:1px solid var(--line);color:var(--mid);}
+.project-card:hover .project-tag{border-color:rgba(240,224,58,.3);color:var(--gold);}
+.project-arrow{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--mid);font-size:1.2rem;transition:all .3s var(--spring);}
+.project-card:hover .project-arrow{border-color:var(--gold);color:var(--gold);transform:rotate(45deg) scale(1.05);background:rgba(240,224,58,.05);}
+
+/* ========================================
+   PROCESS
+   ======================================== */
+#process{background:var(--ink2);}
 .process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;max-width:1200px;margin:0 auto;}
-.process-step{padding:40px 32px;background:var(--card);border:1px solid var(--line);position:relative;overflow:hidden;}
-.process-step:first-child{border-radius:16px 0 0 16px}
-.process-step:last-child{border-radius:0 16px 16px 0}
-.process-step::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease);}
-.process-step:hover::after{transform:scaleX(1)}
-.process-step:hover{background:rgba(240,224,58,.03)}
-.ps-num{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:rgba(240,224,58,.1);line-height:1;margin-bottom:20px;}
-.process-step:hover .ps-num{color:rgba(240,224,58,.25)}
-.ps-ico{font-size:1.5rem;margin-bottom:16px;display:block}
-.ps-title{font-size:1rem;font-weight:700;color:var(--hi);margin-bottom:8px}
-.ps-desc{font-size:.8rem;color:var(--mid);line-height:1.65;font-weight:300}
+.process-step{background:var(--card);border:1px solid var(--line);padding:36px 28px;position:relative;transition:all .3s;}
+.process-step:first-child{border-radius:16px 0 0 16px;}
+.process-step:last-child{border-radius:0 16px 16px 0;}
+.process-step:hover{background:rgba(240,224,58,.02);border-color:rgba(240,224,58,.15);}
+.process-number{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:rgba(240,224,58,.08);line-height:1;margin-bottom:16px;}
+.process-step:hover .process-number{color:rgba(240,224,58,.2);}
+.process-icon{font-size:1.6rem;margin-bottom:16px;display:block;}
+.process-title{font-size:1rem;font-weight:700;color:var(--hi);margin-bottom:8px;}
+.process-desc{font-size:.8rem;color:#9098b0;line-height:1.65;}
 
-/* TESTIMONIALS */
-#testimonials{background:var(--ink)}
-.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1200px;margin:0 auto;}
-.tcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:32px 28px;transition:all .3s var(--ease);position:relative;overflow:hidden;display:flex;flex-direction:column;gap:20px;}
-.tcard::before{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(240,224,58,.06),transparent 70%);}
-.tcard:hover{border-color:rgba(240,224,58,.15);transform:translateY(-4px)}
-.tquote-mark{font-family:'DM Serif Display',serif;font-size:3rem;line-height:.7;color:var(--gold);opacity:.3;margin-bottom:-8px;}
-.tquote-text{font-size:.88rem;color:var(--mid);line-height:1.75;font-weight:300;flex:1}
-.tquote-text strong{color:var(--hi);font-weight:500}
-.tauthor{display:flex;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:20px}
-.tavatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:var(--ink);flex-shrink:0;}
-.ta-r{background:linear-gradient(135deg,var(--gold),var(--gold2))}
-.ta-a{background:linear-gradient(135deg,var(--cyan),#3af0a8)}
-.ta-p{background:linear-gradient(135deg,var(--pink),#f07a3a)}
-.tname{font-size:.85rem;font-weight:700;color:var(--hi)}
-.trole{font-size:.7rem;color:var(--low);margin-top:2px}
-.tstars{font-size:.7rem;color:var(--gold);letter-spacing:3px}
-.tc-ver{margin-left:auto;font-size:.6rem;font-weight:600;color:var(--cyan);background:rgba(58,240,212,0.1);border:1px solid rgba(58,240,212,0.3);padding:2px 7px;border-radius:5px;}
-.tbadges{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:1200px;margin:40px auto 0;}
-.tb{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;align-items:center;gap:12px;}
-.tb-ico{width:36px;height:36px;border-radius:9px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
-.tb-title{font-size:.8rem;font-weight:700;color:var(--hi)}
-.tb-sub{font-size:.65rem;color:var(--low);margin-top:1px}
+/* ========================================
+   TESTIMONIALS
+   ======================================== */
+#testimonials{background:var(--ink);}
+.testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1200px;margin:0 auto;}
+.testimonial-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;transition:all .3s;}
+.testimonial-card:hover{border-color:rgba(240,224,58,.2);transform:translateY(-4px);}
+.testimonial-quote{font-family:'DM Serif Display',serif;font-size:3rem;color:var(--gold);opacity:.3;line-height:.7;margin-bottom:12px;}
+.testimonial-text{font-size:.9rem;color:#a0a8c0;line-height:1.75;margin-bottom:20px;}
+.testimonial-author{display:flex;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:20px;}
+.testimonial-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--ink);flex-shrink:0;}
+.avatar-r{background:linear-gradient(135deg,var(--gold),var(--gold2));}
+.avatar-a{background:linear-gradient(135deg,var(--cyan),#3af0a8);}
+.avatar-p{background:linear-gradient(135deg,var(--pink),#f07a3a);}
+.testimonial-name{font-size:.85rem;font-weight:700;color:var(--hi);}
+.testimonial-role{font-size:.65rem;color:var(--low);margin-top:2px;}
+.testimonial-stars{color:var(--gold);font-size:.7rem;letter-spacing:3px;margin-top:4px;}
+.verified-badge{margin-left:auto;font-size:.6rem;font-weight:600;color:var(--cyan);background:rgba(58,240,212,0.1);border:1px solid rgba(58,240,212,0.2);padding:2px 8px;border-radius:6px;}
 
-/* CTA */
-#cta{background:var(--ink2);padding:140px 48px;text-align:center;position:relative;overflow:hidden;}
-#cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(240,224,58,.06) 0%,transparent 65%);pointer-events:none;}
-.cta-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,18vw,16rem);color:transparent;-webkit-text-stroke:1px rgba(240,224,58,.08);line-height:1;letter-spacing:-.03em;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;user-select:none;}
-.cta-content{position:relative;z-index:2}
-.cta-pre{font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:block;}
-.cta-h{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2rem,5vw,3.8rem);color:var(--hi);line-height:1.1;letter-spacing:-.03em;margin-bottom:20px;max-width:700px;margin-left:auto;margin-right:auto;}
-.cta-h em{color:var(--gold);font-style:italic}
-.cta-sub{font-size:1rem;color:var(--mid);max-width:480px;margin:0 auto 44px;line-height:1.75;font-weight:300;}
-.cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+/* Trust Badges */
+.trust-badges{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1200px;margin:48px auto 0;}
+.trust-item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;}
+.trust-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+.trust-text .trust-title{font-size:.8rem;font-weight:700;color:var(--hi);}
+.trust-text .trust-sub{font-size:.65rem;color:var(--low);margin-top:2px;}
 
-/* CONTACT */
-#contact{background:var(--ink);padding:80px 48px}
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;max-width:1200px;margin:0 auto;}
-.contact-links{display:flex;flex-direction:column;gap:12px}
-.contact-link{display:flex;align-items:center;gap:16px;padding:18px 24px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:.9rem;color:var(--mid);transition:all .3s var(--spring);}
-.contact-link:hover{border-color:rgba(240,224,58,.3);color:var(--hi);transform:translateX(6px);background:rgba(240,224,58,.04)}
-.cl-ico{font-size:1.2rem;width:36px;text-align:center}
-.cl-label{flex:1}
-.cl-sub{font-size:.7rem;color:var(--low);margin-top:2px}
-.cl-arrow{transition:transform .25s var(--spring);color:var(--low)}
-.contact-link:hover .cl-arrow{transform:rotate(45deg)}
-.resp-badge{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:600;color:var(--cyan);background:rgba(58,240,212,0.08);border:1px solid rgba(58,240,212,0.2);padding:8px 16px;border-radius:100px;margin-top:20px;}
-.resp-dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:pulse 2s ease-in-out infinite}
-.contact-copy{font-size:.72rem;color:var(--low);margin-top:20px;line-height:1.6}
+/* ========================================
+   CTA
+   ======================================== */
+#cta{background:var(--ink2);padding:120px 48px;text-align:center;position:relative;}
+.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(240,224,58,.08),transparent 70%);pointer-events:none;}
+.cta-content{position:relative;z-index:2;}
+.cta-label{font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:block;}
+.cta-title{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2rem,5vw,3.5rem);color:var(--hi);line-height:1.1;margin-bottom:20px;}
+.cta-title em{color:var(--gold);font-style:italic;}
+.cta-sub{font-size:1rem;color:#a0a8c0;max-width:480px;margin:0 auto 40px;line-height:1.7;}
+.cta-buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
 
-/* FOOTER */
-footer{border-top:1px solid var(--line);padding:28px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:relative;z-index:2;}
-.foot-copy{font-size:.75rem;color:var(--low)}
-.foot-links{display:flex;gap:20px;list-style:none}
-.foot-links a{font-size:.75rem;color:var(--low);transition:color .2s}
-.foot-links a:hover{color:var(--gold)}
-.foot-back{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:6px;transition:gap .25s;}
-.foot-back:hover{gap:10px}
+/* ========================================
+   CONTACT
+   ======================================== */
+#contact{background:var(--ink);padding:80px 48px;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;max-width:1200px;margin:0 auto;}
+.contact-left h2{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(1.8rem,3.5vw,2.5rem);color:var(--hi);margin-bottom:16px;}
+.contact-left h2 em{color:var(--gold);font-style:italic;}
+.contact-left p{font-size:.95rem;color:#a0a8c0;line-height:1.8;margin-bottom:24px;}
+.reply-badge{display:inline-flex;align-items:center;gap:8px;font-size:.7rem;font-weight:600;color:var(--cyan);background:rgba(58,240,212,0.08);border:1px solid rgba(58,240,212,0.2);padding:8px 16px;border-radius:100px;}
+.reply-dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite;}
+.contact-links{display:flex;flex-direction:column;gap:12px;}
+.contact-link-item{display:flex;align-items:center;gap:16px;padding:18px 24px;border-radius:14px;border:1px solid var(--line);background:var(--card);transition:all .3s;}
+.contact-link-item:hover{border-color:rgba(240,224,58,.3);transform:translateX(6px);background:rgba(240,224,58,.04);}
+.contact-icon{font-size:1.2rem;width:36px;text-align:center;}
+.contact-info{flex:1;}
+.contact-label{font-size:.9rem;font-weight:500;color:var(--hi);}
+.contact-sub{font-size:.7rem;color:var(--low);margin-top:2px;}
+.contact-arrow{transition:transform .25s;color:var(--low);}
+.contact-link-item:hover .contact-arrow{transform:rotate(45deg);}
+.contact-footer{font-size:.7rem;color:var(--low);margin-top:20px;}
 
-/* RESPONSIVE */
+/* ========================================
+   FOOTER
+   ======================================== */
+footer{border-top:1px solid var(--line);padding:24px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.footer-copyright{font-size:.7rem;color:var(--low);}
+.footer-links{display:flex;gap:24px;list-style:none;}
+.footer-links a{font-size:.7rem;color:var(--low);transition:color .2s;}
+.footer-links a:hover{color:var(--gold);}
+.back-to-top{font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:6px;transition:gap .25s;}
+.back-to-top:hover{gap:10px;}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
 @media(max-width:1024px){
-  .nav-links{display:none}
-  .section{padding:90px 32px}
-  #hero{padding:100px 32px 60px}
-  .about-grid{grid-template-columns:1fr;gap:48px}
-  .skills-grid{grid-template-columns:1fr}
-  .process-grid{grid-template-columns:repeat(2,1fr)}
-  .process-step:first-child{border-radius:16px 0 0 0}
-  .process-step:last-child{border-radius:0 0 16px 0}
-  .testi-grid{grid-template-columns:1fr 1fr}
-  .contact-grid{grid-template-columns:1fr}
-  .tbadges{grid-template-columns:repeat(2,1fr)}
-  footer{padding:24px 32px}
-  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .nav-links{display:none;}
+  .ham{display:flex;}
+  .section{padding:80px 32px;}
+  #hero{padding:100px 32px 60px;}
+  .hero-grid{grid-template-columns:1fr;gap:40px;}
+  .about-grid{grid-template-columns:1fr;gap:48px;}
+  .skills-container{grid-template-columns:1fr;}
+  .process-grid{grid-template-columns:repeat(2,1fr);}
+  .process-step:first-child{border-radius:16px 0 0 0;}
+  .process-step:last-child{border-radius:0 0 16px 0;}
+  .testimonial-grid{grid-template-columns:1fr 1fr;}
+  .trust-badges{grid-template-columns:repeat(2,1fr);}
+  .contact-grid{grid-template-columns:1fr;gap:40px;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  footer{padding:20px 32px;}
 }
 @media(max-width:720px){
-  nav{padding:18px 24px}
-  .nav-avail{display:none}
-  .ham{display:flex}
-  .section{padding:72px 24px}
-  #hero{padding:80px 24px 60px}
-  .hero-name{font-size:clamp(3rem,15vw,5rem)}
-  .hero-headline{font-size:clamp(1.6rem,6vw,2.2rem)}
-  .proj-item{grid-template-columns:56px 1fr 40px;gap:16px}
-  .process-grid{grid-template-columns:1fr}
-  .process-step:first-child,.process-step:last-child{border-radius:0}
-  .process-step:first-child{border-radius:16px 16px 0 0}
-  .process-step:last-child{border-radius:0 0 16px 16px}
-  .testi-grid{grid-template-columns:1fr}
-  .tbadges{grid-template-columns:1fr}
-  .about-stats{gap:28px}
-  .cta-actions{flex-direction:column;align-items:center}
-  footer{padding:22px 24px}
-  #cta{padding:100px 24px}
-  #contact{padding:72px 24px}
-  .stats-grid{grid-template-columns:1fr}
-  .hero-wrapper{flex-direction:column}
-}
-@media(max-width:480px){
-  .hero-role-row{flex-direction:column;align-items:flex-start;gap:4px}
-  .hero-scroll{display:none}
+  nav{padding:16px 24px;}
+  .nav-avail{display:none;}
+  .section{padding:60px 24px;}
+  #hero{padding:80px 24px 60px;}
+  .hero-name{font-size:clamp(2.5rem,12vw,4rem);}
+  .hero-headline{font-size:clamp(1.5rem,5vw,2rem);}
+  .project-card{grid-template-columns:1fr;gap:16px;}
+  .project-number{position:absolute;opacity:.3;}
+  .process-grid{grid-template-columns:1fr;}
+  .process-step:first-child,.process-step:last-child{border-radius:0;}
+  .process-step:first-child{border-radius:16px 16px 0 0;}
+  .process-step:last-child{border-radius:0 0 16px 16px;}
+  .testimonial-grid{grid-template-columns:1fr;}
+  .trust-badges{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:1fr;}
+  .hero-actions{flex-direction:column;align-items:stretch;}
+  .btn-primary,.btn-secondary{justify-content:center;}
+  .hero-scroll{display:none;}
+  footer{flex-direction:column;text-align:center;}
 }
 </style>
 </head>
 <body>
 
 <div id="cursor"><div id="cursor-dot"></div><div id="cursor-ring"></div></div>
-<div class="grid-bg" aria-hidden="true"></div>
+<div class="grid-bg"></div>
 
 <nav>
-  <a href="#hero" class="nav-logo">
-    <div class="nav-logo-mark">S</div>
-    Sandeep
-  </a>
+  <a href="#hero" class="nav-logo"><div class="nav-logo-mark">S</div>Sandeep</a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#skills">Skills</a></li>
@@ -373,8 +391,8 @@ footer{border-top:1px solid var(--line);padding:28px 48px;display:flex;align-ite
   <a href="#contact" onclick="closeMob()">Contact</a>
 </div>
 
+<!-- HERO SECTION -->
 <section id="hero">
-  <div class="hero-line"></div>
   <div class="hero-bg-num">AUTO</div>
   <div class="hero-available"><span class="hero-avail-dot"></span>Open to freelance projects</div>
   <h1 class="hero-name">Sandeep<span>.</span></h1>
@@ -383,170 +401,186 @@ footer{border-top:1px solid var(--line);padding:28px 48px;display:flex;align-ite
     <span class="hero-role-prefix">Python & Excel</span>
     <span class="hero-role-type">Automation Engineer</span>
   </div>
-  <div class="hero-wrapper">
-    <div class="hero-left-col">
-      <div class="hero-bottom">
-        <p class="hero-desc">
-          Messy spreadsheets. Manual data entry. Hours of copy-pasting.<br>
-          I build Python scripts that handle all of it — saving businesses <strong>50+ hours every month.</strong>
-        </p>
-        <div class="hero-actions">
-          <a href="#projects" class="btn-gold">View My Work →</a>
-          <a href="#contact" class="btn-outline-gold">Get in Touch</a>
-        </div>
+
+  <div class="hero-grid">
+    <div class="hero-left">
+      <p class="hero-desc">Messy spreadsheets. Manual data entry. Hours of copy-pasting.<br>I build Python scripts that handle all of it — saving businesses <strong>50+ hours every month.</strong></p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn-primary">View My Work →</a>
+        <a href="#contact" class="btn-secondary">Get in Touch</a>
       </div>
     </div>
-    <div class="hero-card">
-      <div class="hc-header">
-        <div class="hc-avatar">S</div>
-        <div><div class="hc-name">Sandeep</div><div class="hc-title">Python Automation Engineer</div></div>
-        <div class="hc-rating"><div class="hc-stars">★★★★★</div><div class="hc-score">5.0 · 40+ reviews</div></div>
+
+    <!-- Profile Card - Right Panel (Properly Placed) -->
+    <div class="profile-card">
+      <div class="card-header">
+        <div class="card-avatar">S</div>
+        <div><div class="card-name">Sandeep</div><div class="card-title">Python Automation Engineer</div></div>
+        <div class="card-rating"><div class="card-stars">★★★★★</div><div class="card-score">5.0 · 40+ reviews</div></div>
       </div>
-      <div class="hc-stats">
-        <div class="hcs"><div class="hcs-n counter-stat" data-target="40">0</div><div class="hcs-l">Projects</div></div>
-        <div class="hcs"><div class="hcs-n counter-stat" data-target="200">0</div><div class="hcs-l">Clients</div></div>
-        <div class="hcs"><div class="hcs-n counter-stat" data-target="50">0</div><div class="hcs-l">Hrs Saved</div></div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num counter-stat" data-target="40">0</div><div class="card-stat-label">Projects</div></div>
+        <div class="card-stat"><div class="card-stat-num counter-stat" data-target="200">0</div><div class="card-stat-label">Clients</div></div>
+        <div class="card-stat"><div class="card-stat-num counter-stat" data-target="50">0</div><div class="card-stat-label">Hrs Saved</div></div>
       </div>
-      <div class="hc-tags"><span class="hc-tag">Python</span><span class="hc-tag">Excel Automation</span><span class="hc-tag">pandas</span><span class="hc-tag">Data Cleaning</span></div>
-      <div class="hc-avail"><div><div class="hc-avail-text">✓ Available for new projects</div><div class="hc-avail-sub">Typically replies within 2–4 hours</div></div><div class="hc-avail-dot"></div></div>
+      <div class="card-tags">
+        <span class="card-tag">Python</span><span class="card-tag">Excel Automation</span><span class="card-tag">pandas</span><span class="card-tag">Data Cleaning</span>
+      </div>
+      <div class="card-availability">
+        <div><div class="card-avail-text">✓ Available for new projects</div><div class="card-avail-sub">Typically replies within 2–4 hours</div></div>
+        <div class="card-avail-dot"></div>
+      </div>
     </div>
   </div>
   <div class="hero-scroll">Scroll</div>
 </section>
 
+<!-- MARQUEE -->
 <div class="marquee-strip">
   <div class="marquee-track" id="marqueeTrack"></div>
 </div>
 
+<!-- ABOUT SECTION - IMPROVED READABILITY -->
 <section id="about" class="section">
   <div class="section-label" data-num="01">About Me</div>
   <div class="about-grid">
-    <div class="about-left reveal">
-      <h2 class="about-h">If your team is doing it<br>by hand, <em>that's my cue.</em></h2>
-      <p class="about-body">I'm a freelance automation engineer who specialises in Python and Excel. Whether it's cleaning <strong>100,000 messy rows</strong>, building a zero-touch reporting pipeline, or converting stacks of PDFs into structured spreadsheets — I build tools that actually run.</p>
-      <p class="about-body">Every project comes with full source code, clear documentation, and a walkthrough so your team can run it independently. No black boxes. No lock-in. Just a working tool you own.</p>
-      <div class="trust-note">🔒 <span><strong>You always get the full source code.</strong> Documented, clean, and yours forever. NDAs available on request.</span></div>
+    <div class="about-text reveal">
+      <h2 class="section-title">If your team is doing it<br>by hand, <em>that's my cue.</em></h2>
+      <p>I'm a freelance automation engineer who specialises in <strong>Python and Excel</strong>. Whether it's cleaning <strong>100,000 messy rows</strong>, building a zero-touch reporting pipeline, or converting stacks of PDFs into structured spreadsheets — I build tools that actually run.</p>
+      <p>Every project comes with <strong>full source code</strong>, clear documentation, and a walkthrough so your team can run it independently. No black boxes. No lock-in. Just a working tool you own.</p>
+      <div class="trust-badge">🔒 <span><strong>You always get the full source code.</strong> Documented, clean, and yours forever. NDAs available on request.</span></div>
       <div class="about-stats">
-        <div class="astat"><div class="astat-n counter-stat" data-target="40">0</div><div class="astat-l">Projects Delivered</div></div>
-        <div class="astat"><div class="astat-n counter-stat" data-target="200">0</div><div class="astat-l">Happy Clients</div></div>
-        <div class="astat"><div class="astat-n counter-stat" data-target="50">0</div><div class="astat-l">Hours Saved/Client</div></div>
+        <div class="stat-item"><div class="stat-number counter-stat" data-target="40">0</div><div class="stat-label">Projects Delivered</div></div>
+        <div class="stat-item"><div class="stat-number counter-stat" data-target="200">0</div><div class="stat-label">Happy Clients</div></div>
+        <div class="stat-item"><div class="stat-number counter-stat" data-target="50">0</div><div class="stat-label">Hours Saved/Client</div></div>
       </div>
     </div>
-    <div class="about-right reveal">
-      <div class="about-card"><span class="about-card-ico">🐍</span><div class="about-card-title">Python-first mindset</div><div class="about-card-body">Clean, documented Python — not clunky macros or fragile formulas.</div></div>
-      <div class="about-card"><span class="about-card-ico">⚡</span><div class="about-card-title">Speed is the metric</div><div class="about-card-body">What takes 4 hours → 4 seconds. That's my standard.</div></div>
-      <div class="about-card"><span class="about-card-ico">🎯</span><div class="about-card-title">Built for real workflows</div><div class="about-card-body">I understand your process first, then build specifically for it.</div></div>
-      <div class="about-card"><span class="about-card-ico">🔄</span><div class="about-card-title">Unlimited revisions</div><div class="about-card-body">Until you're 100% satisfied. Most projects in 1–3 days.</div></div>
+    <div class="feature-cards reveal">
+      <div class="feature-card"><div class="feature-icon">🐍</div><div class="feature-title">Python-first mindset</div><div class="feature-desc">Clean, documented Python — not clunky macros or fragile formulas.</div></div>
+      <div class="feature-card"><div class="feature-icon">⚡</div><div class="feature-title">Speed is the metric</div><div class="feature-desc">What takes 4 hours → 4 seconds. That's my standard.</div></div>
+      <div class="feature-card"><div class="feature-icon">🎯</div><div class="feature-title">Built for real workflows</div><div class="feature-desc">I understand your process first, then build specifically for it.</div></div>
+      <div class="feature-card"><div class="feature-icon">🔄</div><div class="feature-title">Unlimited revisions</div><div class="feature-desc">Until you're 100% satisfied. Most projects in 1–3 days.</div></div>
     </div>
   </div>
+
   <div class="stats-grid reveal">
-    <div class="sg"><div class="sg-n counter-stat" data-target="40">0</div><div class="sg-l">Projects Delivered</div></div>
-    <div class="sg"><div class="sg-n counter-stat" data-target="200">0</div><div class="sg-l">Happy Clients</div></div>
-    <div class="sg"><div class="sg-n counter-stat" data-target="50">0</div><div class="sg-l">Hours Saved Per Client</div></div>
-    <div class="sg"><div class="sg-n">5.0 ★</div><div class="sg-l">Average Rating</div></div>
+    <div class="stat-cell"><div class="stat-num counter-stat" data-target="40">0</div><div class="stat-label">Projects Delivered</div></div>
+    <div class="stat-cell"><div class="stat-num counter-stat" data-target="200">0</div><div class="stat-label">Happy Clients</div></div>
+    <div class="stat-cell"><div class="stat-num counter-stat" data-target="50">0</div><div class="stat-label">Hours Saved Per Client</div></div>
+    <div class="stat-cell"><div class="stat-num">5.0 ★</div><div class="stat-label">Average Rating</div></div>
   </div>
 </section>
 
+<!-- SKILLS SECTION -->
 <section id="skills" class="section">
   <div class="section-label" data-num="02">Skills & Tools</div>
-  <div class="skills-grid">
-    <div class="terminal reveal">
-      <div class="terminal-bar"><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div><div class="t-title">sandeep@skills ~ run_automation.py</div></div>
+  <div class="skills-container">
+    <div class="terminal-window reveal">
+      <div class="terminal-header">
+        <div class="terminal-dot red"></div><div class="terminal-dot yellow"></div><div class="terminal-dot green"></div>
+        <div class="terminal-title">sandeep@skills ~ run_automation.py</div>
+      </div>
       <div class="terminal-body">
-        <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd">python run_automation.py</span></div>
-        <div class="t-line"><span class="t-prompt">→</span> Reading dataset.xlsx</div>
-        <div class="t-line"><span class="t-prompt">→</span> 100,000 rows detected</div>
-        <div class="t-line"><span class="t-prompt">→</span> Removing duplicates… <span style="color:#34d483">✓ 4,823 removed</span></div>
-        <div class="t-line"><span class="t-prompt">→</span> Fixing headers & dates… <span style="color:#34d483">✓ done</span></div>
-        <div class="t-line"><span class="t-prompt">→</span> Writing output… <span style="color:#34d483">✓ clean_data.xlsx saved</span></div>
-        <div class="t-line timing-success"><span class="t-prompt">✓✓</span> <span style="color:#34d483">Completed in 3.1s</span></div>
-        <div class="t-line"><span class="t-prompt" style="color:#8896b3">ℹ</span> Manual time would be ~4 hrs</div>
-        <div class="t-line" style="margin-top:8px"><span class="t-prompt">❯</span><span class="t-cmd" style="opacity:.4">_</span></div>
+        <div class="terminal-line"><span class="terminal-prompt">$</span><span class="terminal-command">python run_automation.py</span></div>
+        <div class="terminal-line"><span class="terminal-prompt">→</span> Reading dataset.xlsx</div>
+        <div class="terminal-line"><span class="terminal-prompt">→</span> 100,000 rows detected</div>
+        <div class="terminal-line"><span class="terminal-prompt">→</span> Removing duplicates… <span style="color:#34d483">✓ 4,823 removed</span></div>
+        <div class="terminal-line"><span class="terminal-prompt">→</span> Fixing headers & dates… <span style="color:#34d483">✓ done</span></div>
+        <div class="terminal-line"><span class="terminal-prompt">→</span> Writing output… <span style="color:#34d483">✓ clean_data.xlsx saved</span></div>
+        <div class="terminal-line terminal-success"><span class="terminal-prompt">✓✓</span> <span style="color:#34d483">Completed in 3.1s</span></div>
+        <div class="terminal-line"><span class="terminal-prompt" style="color:#8896b3">ℹ</span> Manual time would be ~4 hrs</div>
+        <div class="terminal-line" style="margin-top:8px"><span class="terminal-prompt">❯</span><span class="terminal-command" style="opacity:.4">_</span></div>
       </div>
     </div>
-    <div class="skills-list-right reveal">
-      <div class="skill-bar-item"><div class="skill-bar-label"><span>Excel Automation</span><span class="skill-bar-pct">96%</span></div><div class="skill-bar-track"><div class="skill-bar-fill sf-gold" data-width="96"></div></div><div class="ski-libs"><span class="ski-lib">openpyxl</span><span class="ski-lib">xlsxwriter</span></div></div>
-      <div class="skill-bar-item"><div class="skill-bar-label"><span>Python Scripting</span><span class="skill-bar-pct">92%</span></div><div class="skill-bar-track"><div class="skill-bar-fill sf-gold" data-width="92"></div></div><div class="ski-libs"><span class="ski-lib">Python 3.x</span><span class="ski-lib">pathlib</span></div></div>
-      <div class="skill-bar-item"><div class="skill-bar-label"><span>Data Cleaning / pandas</span><span class="skill-bar-pct">94%</span></div><div class="skill-bar-track"><div class="skill-bar-fill sf-cyan" data-width="94"></div></div><div class="ski-libs"><span class="ski-lib">pandas</span><span class="ski-lib">numpy</span><span class="ski-lib">regex</span></div></div>
-      <div class="skill-bar-item"><div class="skill-bar-label"><span>PDF → Excel Conversion</span><span class="skill-bar-pct">88%</span></div><div class="skill-bar-track"><div class="skill-bar-fill sf-cyan" data-width="88"></div></div><div class="ski-libs"><span class="ski-lib">pdfplumber</span><span class="ski-lib">camelot</span></div></div>
-      <div class="skill-bar-item"><div class="skill-bar-label"><span>Data Entry Automation</span><span class="skill-bar-pct">90%</span></div><div class="skill-bar-track"><div class="skill-bar-fill sf-pink" data-width="90"></div></div><div class="ski-libs"><span class="ski-lib">pyautogui</span><span class="ski-lib">selenium</span></div></div>
-      <div class="skill-bar-item"><div class="skill-bar-label"><span>Workflow Scheduling</span><span class="skill-bar-pct">85%</span></div><div class="skill-bar-track"><div class="skill-bar-fill sf-pink" data-width="85"></div></div><div class="ski-libs"><span class="ski-lib">APScheduler</span><span class="ski-lib">cron</span></div></div>
+    <div class="skills-bars reveal">
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">Excel Automation</span><span class="skill-percent">96%</span></div><div class="skill-track"><div class="skill-fill fill-gold" data-width="96"></div></div><div class="skill-libs"><span class="skill-lib">openpyxl</span><span class="skill-lib">xlsxwriter</span></div></div>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">Python Scripting</span><span class="skill-percent">92%</span></div><div class="skill-track"><div class="skill-fill fill-gold" data-width="92"></div></div><div class="skill-libs"><span class="skill-lib">Python 3.x</span><span class="skill-lib">pathlib</span></div></div>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">Data Cleaning / pandas</span><span class="skill-percent">94%</span></div><div class="skill-track"><div class="skill-fill fill-cyan" data-width="94"></div></div><div class="skill-libs"><span class="skill-lib">pandas</span><span class="skill-lib">numpy</span><span class="skill-lib">regex</span></div></div>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">PDF → Excel Conversion</span><span class="skill-percent">88%</span></div><div class="skill-track"><div class="skill-fill fill-cyan" data-width="88"></div></div><div class="skill-libs"><span class="skill-lib">pdfplumber</span><span class="skill-lib">camelot</span></div></div>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">Data Entry Automation</span><span class="skill-percent">90%</span></div><div class="skill-track"><div class="skill-fill fill-pink" data-width="90"></div></div><div class="skill-libs"><span class="skill-lib">pyautogui</span><span class="skill-lib">selenium</span></div></div>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">Workflow Scheduling</span><span class="skill-percent">85%</span></div><div class="skill-track"><div class="skill-fill fill-pink" data-width="85"></div></div><div class="skill-libs"><span class="skill-lib">APScheduler</span><span class="skill-lib">cron</span></div></div>
     </div>
   </div>
 </section>
 
+<!-- PROJECTS SECTION - REDESIGNED -->
 <section id="projects" class="section">
   <div class="section-label" data-num="03">Selected Projects</div>
   <div class="projects-header reveal">
     <div class="projects-title">Work<span>Done.</span></div>
     <div class="projects-count">3 projects → infinite hours saved</div>
   </div>
-  <div class="proj-list">
-    <div class="proj-item reveal"><div class="proj-num">01</div><div><div class="proj-badge">⭐ Most Popular</div><div class="proj-name">Excel Automation Tool</div><div class="proj-desc">Cleans messy Excel data, removes duplicates, formats datasets — in one click. What used to take an afternoon now takes 3 seconds.</div><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">openpyxl</span><span class="proj-tag">pandas</span></div></div><a href="#contact" class="proj-arrow">↗</a></div>
-    <div class="proj-item reveal"><div class="proj-num">02</div><div><div class="proj-name">Data Cleaning Pipeline</div><div class="proj-desc">Converts raw, unstructured datasets into clean, analysis-ready files. Handles encoding issues, merged cells, and inconsistent headers automatically.</div><div class="proj-tags"><span class="proj-tag">Data Wrangling</span><span class="proj-tag">pandas</span><span class="proj-tag">regex</span></div></div><a href="#contact" class="proj-arrow">↗</a></div>
-    <div class="proj-item reveal"><div class="proj-num">03</div><div><div class="proj-name">Workflow Automation Pipeline</div><div class="proj-desc">End-to-end automation for repetitive data entry and processing tasks. File watchers, schedulers, auto-reporting — set once, runs forever.</div><div class="proj-tags"><span class="proj-tag">Scheduler</span><span class="proj-tag">File Watcher</span><span class="proj-tag">Report Gen</span></div></div><a href="#contact" class="proj-arrow">↗</a></div>
+  <div class="project-list">
+    <div class="project-card reveal"><div class="project-number">01</div><div><div class="project-badge">⭐ Most Popular</div><div class="project-name">Excel Automation Tool</div><div class="project-desc">Cleans messy Excel data, removes duplicates, formats datasets — in one click. What used to take an afternoon now takes 3 seconds.</div><div class="project-tags"><span class="project-tag">Python</span><span class="project-tag">openpyxl</span><span class="project-tag">pandas</span></div></div><a href="#contact" class="project-arrow">↗</a></div>
+    <div class="project-card reveal"><div class="project-number">02</div><div><div class="project-name">Data Cleaning Pipeline</div><div class="project-desc">Converts raw, unstructured datasets into clean, analysis-ready files. Handles encoding issues, merged cells, and inconsistent headers automatically.</div><div class="project-tags"><span class="project-tag">Data Wrangling</span><span class="project-tag">pandas</span><span class="project-tag">regex</span></div></div><a href="#contact" class="project-arrow">↗</a></div>
+    <div class="project-card reveal"><div class="project-number">03</div><div><div class="project-name">Workflow Automation Pipeline</div><div class="project-desc">End-to-end automation for repetitive data entry and processing tasks. File watchers, schedulers, auto-reporting — set once, runs forever.</div><div class="project-tags"><span class="project-tag">Scheduler</span><span class="project-tag">File Watcher</span><span class="project-tag">Report Gen</span></div></div><a href="#contact" class="project-arrow">↗</a></div>
   </div>
 </section>
 
+<!-- PROCESS SECTION -->
 <section id="process" class="section">
   <div class="section-label" data-num="04">How I Work</div>
   <div class="process-grid reveal">
-    <div class="process-step"><div class="ps-num">01</div><span class="ps-ico">🔍</span><div class="ps-title">Understand</div><div class="ps-desc">I map your exact workflow — every bottleneck, every manual step.</div></div>
-    <div class="process-step"><div class="ps-num">02</div><span class="ps-ico">🛠</span><div class="ps-title">Build</div><div class="ps-desc">Clean Python code, specific to your data. Tested, documented, ready to run.</div></div>
-    <div class="process-step"><div class="ps-num">03</div><span class="ps-ico">🚀</span><div class="ps-title">Deploy</div><div class="ps-desc">I walk your team through it, explain every part, and ensure they can run it alone.</div></div>
-    <div class="process-step"><div class="ps-num">04</div><span class="ps-ico">♾️</span><div class="ps-title">Automate</div><div class="ps-desc">Once it's running, it keeps running. No manual triggers, no maintenance.</div></div>
+    <div class="process-step"><div class="process-number">01</div><span class="process-icon">🔍</span><div class="process-title">Understand</div><div class="process-desc">I map your exact workflow — every bottleneck, every manual step.</div></div>
+    <div class="process-step"><div class="process-number">02</div><span class="process-icon">🛠</span><div class="process-title">Build</div><div class="process-desc">Clean Python code, specific to your data. Tested, documented, ready to run.</div></div>
+    <div class="process-step"><div class="process-number">03</div><span class="process-icon">🚀</span><div class="process-title">Deploy</div><div class="process-desc">I walk your team through it, explain every part, and ensure they can run it alone.</div></div>
+    <div class="process-step"><div class="process-number">04</div><span class="process-icon">♾️</span><div class="process-title">Automate</div><div class="process-desc">Once it's running, it keeps running. No manual triggers, no maintenance.</div></div>
   </div>
 </section>
 
+<!-- TESTIMONIALS SECTION -->
 <section id="testimonials" class="section">
   <div class="section-label" data-num="05">Testimonials</div>
-  <div class="testi-grid">
-    <div class="tcard reveal"><div class="tquote-mark">"</div><p class="tquote-text">This tool saved my team <strong>literally 6 hours a week.</strong> Fixed messy supplier data in 3 seconds flat.</p><div class="tauthor"><div class="tavatar ta-r">R</div><div><div class="tname">Riya Mehta</div><div class="trole">Operations Manager</div><div class="tstars">★★★★★</div></div><span class="tc-ver">✓ Verified</span></div></div>
-    <div class="tcard reveal"><div class="tquote-mark">"</div><p class="tquote-text">I was spending Sundays cleaning client data. After the custom script, that process is <strong>zero-touch.</strong> Delivered in 2 days.</p><div class="tauthor"><div class="tavatar ta-a">A</div><div><div class="tname">Arjun Sharma</div><div class="trole">Freelance Data Analyst</div><div class="tstars">★★★★★</div></div><span class="tc-ver">✓ Verified</span></div></div>
-    <div class="tcard reveal"><div class="tquote-mark">"</div><p class="tquote-text">The PDF to Excel conversion alone is worth <strong>10x the price.</strong> Invoice processing used to take a full day.</p><div class="tauthor"><div class="tavatar ta-p">P</div><div><div class="tname">Priya Nair</div><div class="trole">Finance Lead</div><div class="tstars">★★★★★</div></div><span class="tc-ver">✓ Verified</span></div></div>
+  <div class="testimonial-grid">
+    <div class="testimonial-card reveal"><div class="testimonial-quote">"</div><div class="testimonial-text">This tool saved my team <strong>literally 6 hours a week.</strong> Fixed messy supplier data in 3 seconds flat.</div><div class="testimonial-author"><div class="testimonial-avatar avatar-r">R</div><div><div class="testimonial-name">Riya Mehta</div><div class="testimonial-role">Operations Manager</div><div class="testimonial-stars">★★★★★</div></div><div class="verified-badge">✓ Verified</div></div></div>
+    <div class="testimonial-card reveal"><div class="testimonial-quote">"</div><div class="testimonial-text">I was spending Sundays cleaning client data. After the custom script, that process is <strong>zero-touch.</strong> Delivered in 2 days.</div><div class="testimonial-author"><div class="testimonial-avatar avatar-a">A</div><div><div class="testimonial-name">Arjun Sharma</div><div class="testimonial-role">Freelance Data Analyst</div><div class="testimonial-stars">★★★★★</div></div><div class="verified-badge">✓ Verified</div></div></div>
+    <div class="testimonial-card reveal"><div class="testimonial-quote">"</div><div class="testimonial-text">The PDF to Excel conversion alone is worth <strong>10x the price.</strong> Invoice processing used to take a full day.</div><div class="testimonial-author"><div class="testimonial-avatar avatar-p">P</div><div><div class="testimonial-name">Priya Nair</div><div class="testimonial-role">Finance Lead</div><div class="testimonial-stars">★★★★★</div></div><div class="verified-badge">✓ Verified</div></div></div>
   </div>
-  <div class="tbadges reveal">
-    <div class="tb"><div class="tb-ico">🔐</div><div><div class="tb-title">Your data stays safe</div><div class="tb-sub">NDAs available</div></div></div>
-    <div class="tb"><div class="tb-ico">📦</div><div><div class="tb-title">Full source code</div><div class="tb-sub">No black boxes</div></div></div>
-    <div class="tb"><div class="tb-ico">🔄</div><div><div class="tb-title">Unlimited revisions</div><div class="tb-sub">100% satisfaction</div></div></div>
-    <div class="tb"><div class="tb-ico">⚡</div><div><div class="tb-title">Fast turnaround</div><div class="tb-sub">1–3 days</div></div></div>
+
+  <div class="trust-badges reveal">
+    <div class="trust-item"><div class="trust-icon">🔐</div><div class="trust-text"><div class="trust-title">Your data stays safe</div><div class="trust-sub">NDAs available</div></div></div>
+    <div class="trust-item"><div class="trust-icon">📦</div><div class="trust-text"><div class="trust-title">Full source code</div><div class="trust-sub">No black boxes</div></div></div>
+    <div class="trust-item"><div class="trust-icon">🔄</div><div class="trust-text"><div class="trust-title">Unlimited revisions</div><div class="trust-sub">100% satisfaction</div></div></div>
+    <div class="trust-item"><div class="trust-icon">⚡</div><div class="trust-text"><div class="trust-title">Fast turnaround</div><div class="trust-sub">1–3 days</div></div></div>
   </div>
 </section>
 
+<!-- CTA SECTION -->
 <section id="cta">
-  <div class="cta-num">GO</div>
+  <div class="cta-glow"></div>
   <div class="cta-content reveal">
-    <span class="cta-pre">Ready to save time?</span>
-    <h2 class="cta-h">Stop doing manually what I<br>can <em>automate</em> for you.</h2>
+    <span class="cta-label">Ready to save time?</span>
+    <h2 class="cta-title">Stop doing manually what I<br>can <em>automate</em> for you.</h2>
     <p class="cta-sub">Tell me what your team does by hand every day. I'll build something that handles it in seconds.</p>
-    <div class="cta-actions">
-      <a href="#contact" class="btn-gold">Start a Project →</a>
-      <a href="#contact" class="btn-outline-gold">Get a Free Quote</a>
+    <div class="cta-buttons">
+      <a href="#contact" class="btn-primary">Start a Project →</a>
+      <a href="#contact" class="btn-secondary">Get a Free Quote</a>
     </div>
   </div>
 </section>
 
+<!-- CONTACT SECTION -->
 <section id="contact">
   <div class="section-label" data-num="06">Get In Touch</div>
   <div class="contact-grid">
-    <div class="reveal">
-      <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,3.5vw,2.5rem);color:var(--hi);letter-spacing:-.025em;line-height:1.15;margin-bottom:16px">Let's build something<br><em style="color:var(--gold);font-style:italic">that saves you time.</em></h2>
-      <p style="font-size:.95rem;color:var(--mid);line-height:1.8;font-weight:300;max-width:400px">Whether you need a quick Excel cleanup or a full automation pipeline — reach out and I'll get back to you within a few hours.</p>
-      <div class="resp-badge"><span class="resp-dot"></span> Typically replies in 2–4 hours</div>
+    <div class="contact-left reveal">
+      <h2>Let's build something<br><em>that saves you time.</em></h2>
+      <p>Whether you need a quick Excel cleanup or a full automation pipeline — reach out and I'll get back to you within a few hours.</p>
+      <div class="reply-badge"><span class="reply-dot"></span> Typically replies in 2–4 hours</div>
     </div>
     <div class="contact-links reveal">
-      <a href="mailto:hello@sandeep.dev" class="contact-link"><span class="cl-ico">✉️</span><div><div class="cl-label">hello@sandeep.dev</div><div class="cl-sub">Email me directly</div></div><span class="cl-arrow">↗</span></a>
-      <a href="https://fiverr.com" target="_blank" rel="noopener" class="contact-link"><span class="cl-ico">🟢</span><div><div class="cl-label">Hire on Fiverr</div><div class="cl-sub">Protected payments · Reviews visible</div></div><span class="cl-arrow">↗</span></a>
-      <a href="https://linkedin.com" target="_blank" rel="noopener" class="contact-link"><span class="cl-ico">💼</span><div><div class="cl-label">LinkedIn Profile</div><div class="cl-sub">View my professional profile</div></div><span class="cl-arrow">↗</span></a>
-      <p class="contact-copy">Based in India · Available globally · Response within 24 hours</p>
+      <a href="mailto:hello@sandeep.dev" class="contact-link-item"><span class="contact-icon">✉️</span><div class="contact-info"><div class="contact-label">hello@sandeep.dev</div><div class="contact-sub">Email me directly</div></div><span class="contact-arrow">↗</span></a>
+      <a href="https://fiverr.com" target="_blank" rel="noopener" class="contact-link-item"><span class="contact-icon">🟢</span><div class="contact-info"><div class="contact-label">Hire on Fiverr</div><div class="contact-sub">Protected payments · Reviews visible</div></div><span class="contact-arrow">↗</span></a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener" class="contact-link-item"><span class="contact-icon">💼</span><div class="contact-info"><div class="contact-label">LinkedIn Profile</div><div class="contact-sub">View my professional profile</div></div><span class="contact-arrow">↗</span></a>
+      <div class="contact-footer">Based in India · Available globally · Response within 24 hours</div>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="foot-copy">© 2026 Sandeep · Automation Engineer</div>
-  <ul class="foot-links"><li><a href="#hero">Home</a></li><li><a href="#projects">Projects</a></li><li><a href="#contact">Contact</a></li></ul>
-  <a href="#hero" class="foot-back">Back to Top ↑</a>
+  <div class="footer-copyright">© 2026 Sandeep · Automation Engineer</div>
+  <ul class="footer-links"><li><a href="#hero">Home</a></li><li><a href="#projects">Projects</a></li><li><a href="#contact">Contact</a></li></ul>
+  <a href="#hero" class="back-to-top">Back to Top ↑</a>
 </footer>
 
 <script>
@@ -554,8 +588,8 @@ footer{border-top:1px solid var(--line);padding:28px 48px;display:flex;align-ite
 const dot=document.getElementById('cursor-dot'),ring=document.getElementById('cursor-ring');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
-(function animRing(){rx+=(mx-rx)*.14;ry+=(my-ry)*.14;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
-document.querySelectorAll('a,button,.proj-item,.about-card,.tcard,.process-step').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'))});
+(function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+document.querySelectorAll('a,button,.project-card,.feature-card,.testimonial-card,.process-step').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'))});
 
 // Mobile nav
 const ham=document.getElementById('ham'),mob=document.getElementById('mobMenu'),closeBtn=document.getElementById('mobClose');
@@ -563,16 +597,16 @@ ham.addEventListener('click',()=>mob.classList.add('open'));
 closeBtn.addEventListener('click',()=>mob.classList.remove('open'));
 function closeMob(){mob.classList.remove('open');}
 
-// Marquee - single seamless loop
+// Marquee
 const marqueeItems=['Excel Automation','Data Cleaning','Python Scripting','PDF → Excel','Duplicate Removal','Workflow Automation','Batch Processing','File Conversion','Data Formatting'];
 const marqueeTrack=document.getElementById('marqueeTrack');
 marqueeTrack.innerHTML=[...marqueeItems,...marqueeItems].map(t=>`<div class="marquee-item"><span class="dot"></span>${t}</div>`).join('');
 
 // Scroll reveal
-const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}})},{threshold:.1,rootMargin:'0px 0px -32px 0px'});
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}})},{threshold:.1,rootMargin:'0px 0px -20px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-// Counter animation - FIXED for all stats
+// Counter animation
 function startCounter(el) {
     const target = parseInt(el.getAttribute('data-target'));
     if (!target || isNaN(target)) return;
@@ -584,32 +618,25 @@ function startCounter(el) {
         if (current >= target) clearInterval(timer);
     }, 28);
 }
-
-// Observe all counter containers
 const counterObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.querySelectorAll('.counter-stat, [data-target]').forEach(el => {
-                if (el.getAttribute('data-target')) startCounter(el);
-            });
+            entry.target.querySelectorAll('.counter-stat, [data-target]').forEach(el => { if(el.getAttribute('data-target')) startCounter(el); });
             counterObserver.unobserve(entry.target);
         }
     });
 }, { threshold: 0.2 });
-
-document.querySelectorAll('.about-stats, .stats-grid, .hc-stats').forEach(container => counterObserver.observe(container));
-
-// Also run counters for hero card immediately (already visible)
-document.querySelectorAll('.hc-stats .counter-stat').forEach(el => { if(el.getAttribute('data-target')) startCounter(el); });
+document.querySelectorAll('.about-stats, .stats-grid, .card-stats').forEach(container => counterObserver.observe(container));
+document.querySelectorAll('.card-stats .counter-stat').forEach(el => { if(el.getAttribute('data-target')) startCounter(el); });
 
 // Skill bars
-const barObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.skill-bar-fill').forEach(bar=>{bar.style.width=bar.getAttribute('data-width')+'%';});barObs.unobserve(e.target);}})},{threshold:.3});
-document.querySelectorAll('.skills-list-right').forEach(el=>barObs.observe(el));
+const barObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.skill-fill').forEach(bar=>{bar.style.width=bar.getAttribute('data-width')+'%';});barObs.unobserve(e.target);}})},{threshold:.3});
+document.querySelectorAll('.skills-bars').forEach(el=>barObs.observe(el));
 
 // Nav highlight
 const secs=document.querySelectorAll('section[id]');
 const nls=document.querySelectorAll('.nav-links a');
-window.addEventListener('scroll',()=>{let cur='';secs.forEach(s=>{if(window.scrollY>=s.offsetTop-120)cur=s.id});nls.forEach(a=>{a.style.color=a.getAttribute('href')==='#'+cur?'var(--hi)':'';});},{passive:true});
+window.addEventListener('scroll',()=>{let cur='';secs.forEach(s=>{if(window.scrollY>=s.offsetTop-120)cur=s.id});nls.forEach(a=>{a.style.color=a.getAttribute('href')==='#'+cur?'var(--gold)':'var(--mid)';});},{passive:true});
 </script>
 </body>
 </html>
